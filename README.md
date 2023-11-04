@@ -1,24 +1,23 @@
-# README
+# Simple client to Github api
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The app is dockerized, so to run it you need to have Docker (docker-compose) in your system
+and run:
+``` bash
+ docker-compose up rails
+```
 
-Things you may want to cover:
 
-* Ruby version
+Main points:
 
-* System dependencies
+* Github::SearchRepoService incapsulate requests to GitHub API
 
-* Configuration
+* Any new implementation to Github API should lay in Github namespace
 
-* Database creation
+* For test it uses VCR gem
 
-* Database initialization
 
-* How to run the test suite
+Limitations:
 
-* Services (job queues, cache servers, search engines, etc.)
+* no showing proper notifications in case of exception
 
-* Deployment instructions
-
-* ...
+* the number of the last page is calculated incorrectly
