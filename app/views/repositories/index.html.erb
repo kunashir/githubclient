@@ -1,0 +1,23 @@
+<h1>Repository#search</h1>
+<div class="search">
+  <%= form_with url: repositories_index_url, class: 'search__form', method: :get, local: true do %>
+    <%= label_tag(:q, "Search for:") %>
+    <%= text_field_tag(:q) %>
+    <%= submit_tag("Search") %>
+  <% end %>
+</div>
+<% if @repositories %>
+  <div class='result' %>
+    <% @repositories.items.each do |repo| %>
+      <lo class='result__list'>
+        <li class='result__item'> <%= link_to repo.full_name, repo.html_url %> </li>
+      </lo>
+    <% end %>
+    <%= paginate @repositories %>
+  </div>
+<% else %>
+  <div>
+  <%= params[:q] %>
+  </div>
+  <div> No repositories were found </div>
+<% end %>
