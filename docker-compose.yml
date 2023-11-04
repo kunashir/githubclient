@@ -1,0 +1,48 @@
+
+version: '3'
+
+services:
+  app: &app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tmpfs:
+      - /tmp
+    env_file:
+      - .env.development
+
+  backend: &backend
+    <<: *app
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app:cached
+      - rails_cache:/app/tmp/cache
+      - bundle:/usr/local/bundle
+      - /run/host-services/ssh-auth.sock:/run/host-services/ssh-auth.sock
+      - history:/usr/local/hist
+    environment:
+      MALLOC_ARENA_MAX: 2
+      RAILS_ENV: ${RAILS_ENV:-development}
+      EDITOR: vi
+      HISTFILE: /usr/local/hist/.bash_history
+      IRB_HISTFILE: /usr/local/hist/.irb_history
+      SSH_AUTH_SOCK: "/run/host-services/ssh-auth.sock"
+
+  runner:
+    <<: *backend
+    command: /bin/bash
+    ports:
+      - '3000:3000'
+      - '3002:3002'
+
+  rails:
+    <<: *backend
+    command: bash -c "rm -rf /app/tmp/pids/server.pid; bundle exec rails s -p 3000 -b '0.0.0.0'"
+    ports:
+      - "3000:3000"
+
+volumes:
+  bundle:
+  rails_cache:
+  history:
