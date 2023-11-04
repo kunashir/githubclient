@@ -1,9 +1,9 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
-require 'mocha/minitest'
-require 'capybara/rails'
-require 'capybara/minitest'
+require "mocha/minitest"
+require "capybara/rails"
+require "capybara/minitest"
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
@@ -11,8 +11,8 @@ class ActiveSupport::TestCase
   VCR.configure do |config|
     config.cassette_library_dir = "vcr_cassettes"
     config.hook_into :webmock
-    config.filter_sensitive_data('<PASSWORD>') do |interaction|
-      interaction.request.headers['Authorization'].first
+    config.filter_sensitive_data("<PASSWORD>") do |interaction|
+      interaction.request.headers["Authorization"].first
     end
   end
 end
@@ -29,4 +29,3 @@ class ActionDispatch::IntegrationTest
     Capybara.use_default_driver
   end
 end
-
